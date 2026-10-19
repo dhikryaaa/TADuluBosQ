@@ -114,16 +114,16 @@ def monitor(config, events, stop):
 # ---------- Popup ----------
 def show_popup(root, info, procs):
     colors = {
-        "background": "#eef5ff",
-        "card": "#ffffff",
-        "heading": "#12325b",
-        "text": "#52657d",
-        "muted": "#8091a7",
-        "border": "#dbe8f7",
-        "primary": "#2563eb",
-        "primary_hover": "#1d4ed8",
-        "secondary": "#e8f0fb",
-        "secondary_hover": "#dce9f8",
+        "background": "#0b2f5b",
+        "card": "#1557a6",
+        "heading": "#ffffff",
+        "text": "#e5f0ff",
+        "muted": "#a9c8ed",
+        "border": "#3475c2",
+        "primary": "#0b2f5b",
+        "primary_hover": "#082445",
+        "secondary": "#3475c2",
+        "secondary_hover": "#4385d2",
     }
 
     win = tk.Toplevel(root)
@@ -156,23 +156,21 @@ def show_popup(root, info, procs):
     )
     card.pack(fill="both", expand=True, padx=16, pady=16)
 
-    tk.Frame(card, bg=colors["primary"], height=4).pack(fill="x")
+    tk.Frame(card, bg=colors["card"], height=4).pack(fill="x")
+    content = tk.Frame(card, bg=colors["card"])
+    content.pack(fill="both", expand=True)
+    body = tk.Frame(content, bg=colors["card"])
+    body.place(relx=0.5, rely=0.5, anchor="center")
+
     tk.Label(
-        card,
-        text="TADuluBosQ",
-        font=("Segoe UI", 9, "bold"),
-        fg=colors["primary"],
-        bg=colors["card"],
-    ).pack(pady=(18, 4))
-    tk.Label(
-        card,
-        text=info.get("title", "TADuluBosQ"),
+        body,
+        text=info.get("title", "TA Dulu Bosss!"),
         font=("Segoe UI", 16, "bold"),
         fg=colors["heading"],
         bg=colors["card"],
-    ).pack(pady=(0, 8))
+    ).pack(pady=(24, 8))
     tk.Label(
-        card,
+        body,
         text=info.get("message", ""),
         font=("Segoe UI", 10),
         fg=colors["text"],
@@ -181,8 +179,8 @@ def show_popup(root, info, procs):
         justify="center",
     ).pack(pady=(0, 12))
 
-    frame = tk.Frame(card, bg=colors["card"])
-    frame.pack(pady=(0, 18))
+    frame = tk.Frame(body, bg=colors["card"])
+    frame.pack(pady=(0, 24))
 
     cancel_btn = tk.Button(
         frame,
