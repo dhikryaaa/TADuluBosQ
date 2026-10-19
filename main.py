@@ -4,6 +4,7 @@ import queue
 import sys
 import threading
 import tkinter as tk
+import ctypes
 from pathlib import Path
 
 import psutil
@@ -25,6 +26,13 @@ pending_lock = threading.Lock()
 def load_config():
     with open(CONFIG_PATH, encoding="utf-8") as f:
         return json.load(f)
+
+# --------- Single instance ----------
+def ensure_single_instance():
+    handle = ctypes.windll.kernel32.CreateMutexW(None, False, "TADuluBosQ_single_instance")
+    if ctypes.windll.kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
+        sys.exit(0)
+    return handle
 
 
 # ---------- Kontrol proses ----------
@@ -238,6 +246,7 @@ def make_icon_image():
 
 
 def main():
+    _mutex_handle = ensure_single_instance()  # pastikan hanya satu instance yang jalan
     config = load_config()
     events = queue.Queue()
     stop = threading.Event()
