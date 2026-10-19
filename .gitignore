@@ -2,3 +2,5 @@
 venv/*
 .venv-win/*
 __pycache__/
+build/
+dist/
