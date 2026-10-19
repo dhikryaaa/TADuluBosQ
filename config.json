@@ -6,11 +6,6 @@
       "title": "Is your Thesis finished yet?",
       "message": "It's not weekend yet blud, don't play VALORANT, GO FINISH YOUR THESIS!",
       "countdown": 5
-    },
-    "notepad.exe": {
-      "title": "Tes popup",
-      "message": "Kalau ini muncul, deteksinya berhasil.",
-      "countdown": 3
     }
   }
 }
