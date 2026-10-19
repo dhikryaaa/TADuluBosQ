@@ -113,9 +113,22 @@ def monitor(config, events, stop):
 
 # ---------- Popup ----------
 def show_popup(root, info, procs):
+    colors = {
+        "background": "#eef5ff",
+        "card": "#ffffff",
+        "heading": "#12325b",
+        "text": "#52657d",
+        "muted": "#8091a7",
+        "border": "#dbe8f7",
+        "primary": "#2563eb",
+        "primary_hover": "#1d4ed8",
+        "secondary": "#e8f0fb",
+        "secondary_hover": "#dce9f8",
+    }
+
     win = tk.Toplevel(root)
     win.title("TADuluBosQ")
-    win.configure(bg="#1e1e2e")
+    win.configure(bg=colors["background"])
     win.attributes("-topmost", True)
     win.resizable(False, False)
 
@@ -130,25 +143,80 @@ def show_popup(root, info, procs):
     # Tombol X dianggap Cancel, supaya aplikasi tidak tertinggal membeku selamanya
     win.protocol("WM_DELETE_WINDOW", on_cancel)
 
-    w, h = 440, 240
+    w, h = 440, 270
     x = (win.winfo_screenwidth() - w) // 2
     y = (win.winfo_screenheight() - h) // 2
     win.geometry(f"{w}x{h}+{x}+{y}")
 
-    tk.Label(win, text=info.get("title", "TADuluBosQ"), font=("Segoe UI", 16, "bold"),
-             fg="#f9e2af", bg="#1e1e2e").pack(pady=(25, 10))
-    tk.Label(win, text=info.get("message", ""), font=("Segoe UI", 11),
-             fg="#cdd6f4", bg="#1e1e2e", wraplength=380, justify="center").pack(pady=5)
+    card = tk.Frame(
+        win,
+        bg=colors["card"],
+        highlightbackground=colors["border"],
+        highlightthickness=1,
+    )
+    card.pack(fill="both", expand=True, padx=16, pady=16)
 
-    frame = tk.Frame(win, bg="#1e1e2e")
-    frame.pack(pady=25)
+    tk.Frame(card, bg=colors["primary"], height=4).pack(fill="x")
+    tk.Label(
+        card,
+        text="TADuluBosQ",
+        font=("Segoe UI", 9, "bold"),
+        fg=colors["primary"],
+        bg=colors["card"],
+    ).pack(pady=(18, 4))
+    tk.Label(
+        card,
+        text=info.get("title", "TADuluBosQ"),
+        font=("Segoe UI", 16, "bold"),
+        fg=colors["heading"],
+        bg=colors["card"],
+    ).pack(pady=(0, 8))
+    tk.Label(
+        card,
+        text=info.get("message", ""),
+        font=("Segoe UI", 10),
+        fg=colors["text"],
+        bg=colors["card"],
+        wraplength=360,
+        justify="center",
+    ).pack(pady=(0, 12))
 
-    tk.Button(frame, text="Cancel", font=("Segoe UI", 11), width=14,
-              command=on_cancel).pack(side="left", padx=8)
+    frame = tk.Frame(card, bg=colors["card"])
+    frame.pack(pady=(0, 18))
 
-    play_btn = tk.Button(frame, text="", font=("Segoe UI", 11), width=16,
-                         state="disabled", command=on_play)
-    play_btn.pack(side="left", padx=8)
+    cancel_btn = tk.Button(
+        frame,
+        text="Cancel",
+        font=("Segoe UI", 10, "bold"),
+        width=12,
+        fg=colors["heading"],
+        bg=colors["secondary"],
+        activeforeground=colors["heading"],
+        activebackground=colors["secondary_hover"],
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        command=on_cancel,
+    )
+    cancel_btn.pack(side="left", padx=6, ipady=5)
+
+    play_btn = tk.Button(
+        frame,
+        text="",
+        font=("Segoe UI", 10, "bold"),
+        width=16,
+        fg="#ffffff",
+        bg=colors["primary"],
+        activeforeground="#ffffff",
+        activebackground=colors["primary_hover"],
+        disabledforeground=colors["muted"],
+        relief="flat",
+        bd=0,
+        cursor="hand2",
+        state="disabled",
+        command=on_play,
+    )
+    play_btn.pack(side="left", padx=6, ipady=5)
 
     def tick(n):
         if not win.winfo_exists():

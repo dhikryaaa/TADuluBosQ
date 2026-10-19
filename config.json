@@ -3,7 +3,7 @@
   "skip_weekdays": [4, 5, 6],
   "targets": {
     "RiotClientServices.exe": {
-      "title": "Hold up, wait a minute!",
+      "title": "Is your Thesis finished yet?",
       "message": "It's not weekend yet blud, don't play VALORANT, GO FINISH YOUR THESIS!",
       "countdown": 5
     },
