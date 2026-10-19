@@ -1,11 +1,7 @@
 {
-  "poll_interval": 2,
+  "poll_interval": 0.5,
+  "skip_weekdays": [4, 5, 6],
   "targets": {
-    "VALORANT-Win64-Shipping.exe": {
-      "title": "Hold up, wait a minute!",
-      "message": "It's not weekend yet blud, don't play VALORANT, GO FINISH YOUR THESIS!",
-      "countdown": 5
-    },
     "RiotClientServices.exe": {
       "title": "Hold up, wait a minute!",
       "message": "It's not weekend yet blud, don't play VALORANT, GO FINISH YOUR THESIS!",
