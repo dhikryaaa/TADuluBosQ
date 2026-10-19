@@ -37,7 +37,7 @@ def suspend_procs(procs):
             with pending_lock:
                 pending.append(p)
         except psutil.Error as e:
-            print(f"Gagal suspend PID {p.pid}: {e}")
+            print(f"Failed to suspend PID {p.pid}: {e}")
     return ok
 
 
@@ -53,7 +53,7 @@ def resume_procs(procs):
         try:
             p.resume()
         except psutil.Error as e:
-            print(f"Gagal resume PID {p.pid}: {e}")
+            print(f"Failed to resume PID {p.pid}: {e}")
     _forget(procs)
 
 
@@ -67,7 +67,7 @@ def kill_procs(procs):
             try:
                 v.kill()
             except psutil.Error as e:
-                print(f"Gagal kill PID {v.pid}: {e}")
+                print(f"Failed to kill PID {v.pid}: {e}")
     _forget(procs)
 
 
