@@ -11,14 +11,11 @@ import psutil
 import pystray
 from PIL import Image, ImageDraw
 
-# Folder tempat config.json berada (di samping .py atau .exe)
 BASE = Path(sys.executable).parent if getattr(sys, "frozen", False) else Path(__file__).parent
 CONFIG_PATH = BASE / "config.json"
 
-# Python: Senin=0 ... Jumat=4, Sabtu=5, Minggu=6
 DEFAULT_SKIP_WEEKDAYS = [4, 5, 6]
 
-# Proses yang sedang dibekukan menunggu keputusan user
 pending = []
 pending_lock = threading.Lock()
 
@@ -30,7 +27,7 @@ def load_config():
 # --------- Single instance ----------
 def ensure_single_instance():
     handle = ctypes.windll.kernel32.CreateMutexW(None, False, "TADuluBosQ_single_instance")
-    if ctypes.windll.kernel32.GetLastError() == 183:  # ERROR_ALREADY_EXISTS
+    if ctypes.windll.kernel32.GetLastError() == 183: 
         sys.exit(0)
     return handle
 
@@ -90,8 +87,8 @@ def monitor(config, events, stop):
     targets = {k.lower(): v for k, v in config["targets"].items()}
     interval = config.get("poll_interval", 0.5)
     skip_days = set(config.get("skip_weekdays", DEFAULT_SKIP_WEEKDAYS))
-    active = set()       # target yang sedang berjalan, supaya popup tidak berulang
-    first_scan = True    # proses yang sudah jalan sebelum program mulai tidak di-suspend
+    active = set()      
+    first_scan = True    
 
     while not stop.is_set():
         found = {}
@@ -109,12 +106,12 @@ def monitor(config, events, stop):
                 if first_scan:
                     continue
                 if datetime.date.today().weekday() in skip_days:
-                    continue  # hari bebas popup, biarkan aplikasi jalan normal
-                procs = suspend_procs(found[name])  # bekukan secepat mungkin
-                events.put((info, procs))           # kirim ke thread UI
+                    continue 
+                procs = suspend_procs(found[name])  
+                events.put((info, procs))          
             elif name not in found:
-                active.discard(name)  # reset, popup muncul lagi di peluncuran berikutnya
-
+                active.discard(name)  
+                
         first_scan = False
         stop.wait(interval)
 
@@ -148,7 +145,6 @@ def show_popup(root, info, procs):
         resume_procs(procs)
         win.destroy()
 
-    # Tombol X dianggap Cancel, supaya aplikasi tidak tertinggal membeku selamanya
     win.protocol("WM_DELETE_WINDOW", on_cancel)
 
     w, h = 440, 270
@@ -246,19 +242,19 @@ def make_icon_image():
 
 
 def main():
-    _mutex_handle = ensure_single_instance()  # pastikan hanya satu instance yang jalan
+    _mutex_handle = ensure_single_instance() 
     config = load_config()
     events = queue.Queue()
     stop = threading.Event()
 
     root = tk.Tk()
-    root.withdraw()  # window utama disembunyikan, hanya dipakai sebagai induk popup
+    root.withdraw() 
 
     threading.Thread(target=monitor, args=(config, events, stop), daemon=True).start()
 
     def on_quit(icon, item):
         icon.stop()
-        stop.set()  # poll() di bawah yang akan menutup tkinter
+        stop.set() 
 
     icon = pystray.Icon(
         "TADuluBosQ", make_icon_image(), "TADuluBosQ",
@@ -282,8 +278,8 @@ def main():
     try:
         root.mainloop()
     finally:
-        resume_all_pending()  # jangan sampai ada aplikasi tertinggal membeku saat program keluar
-
+        resume_all_pending() 
+        
 
 if __name__ == "__main__":
     main()
